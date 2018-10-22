@@ -13,15 +13,3 @@ GameSet Slow Modifier [Sammi Husky]
 * 046d34ec 386000XX
 * 0404e9b0 386000XX
 X = Slow amount.
-
-SandbagHRC Loads Random Costumes v1.0 [Sammi Husky]
-* C298d5e4 00000006
-* 2C1B004F 40820020
-* 7C7C1B78 38600009
-* 3D808003 618CFC7C
-* 7D8903A6 4E800421
-* 7C641B78 38800000
-* 3B80004F 60000000
-Loads the costumes from itmCommonBrres, however i'm looking into getting the textures and
-models to load from individual files like fighters in order to simplify the process and
-save space.
