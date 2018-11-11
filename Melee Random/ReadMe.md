@@ -11,3 +11,8 @@ There are 2 versions of the code available, one for each method of customizing t
    
 ### [Melee Random v2 (CSS Expansion)](https://github.com/Sammi-Husky/Brawl-Codes/blob/master/Melee%20Random/Melee%20Random%20(CSS%20Expansion).txt) ###
    - Use this version if you use CSS Expansion, as the CSSRoster.dat file includes a random roster.
+
+## Usage Notes ##
+
+**stock icons**
+ - All Stock Icons are required to be present and for all costumes that can be selected. The game will crash if the code randomly selects a character and costume combination for which there are no stock icons even if the menu you are in doesn't use stock icons
