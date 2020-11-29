@@ -40,11 +40,16 @@ _sdopen:
     lis     r4, g_sdFile@h
     stw     r3, g_sdFile@l(r4)
     addi    sp, sp, 0x80 # restore sp
+    cmpwi   r3, 0
+    bne     _end # only fall to DVD if open fails
     
-_end:
+_dvd:
     mr      r3, r26
-    lmw     r4, 0x08(sp)
+    mr      r4, r27
     bl      DVDOpen
+
+_end:
+    lmw     r4, 0x08(sp) # restore original registers
     lwz     r0, 0x94(sp)
     addi    sp, sp, 0x90
     mtlr    r0 # original LR
