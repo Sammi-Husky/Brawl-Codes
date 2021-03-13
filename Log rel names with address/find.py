@@ -8,8 +8,6 @@ def find_modules(filepath):
         loaded = {}
         for line in f:
             if '<<gfModule>>' in line.strip():
-                if 'ft_' in line:
-                    continue
                 m = re.findall('(?:[a-zA-Z]+\:\s*)([\w\.]+)', line.strip())
                 if m[4] not in loaded:
                     loaded[m[4]] = m[3]
