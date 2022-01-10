@@ -1,8 +1,6 @@
 #!A805A7E00
 #!THYBRID
-
-.include "common.asm"
-
+.include "lib/common.asm"
 
 _start:
     li      r5, 0x67
@@ -46,4 +44,4 @@ _disc:
   mr        r28, r3
 
 _end:
-  b         0x8001c054
+  b         -0x58BE30
