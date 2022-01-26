@@ -135,6 +135,8 @@ _main:
     %call   (FAFStat)
     cmpwi   r3, 0
     lwz     r3, 0x08(r1)    # get filesize returned from FAFStat
+	addi	r3, r3, 0x1f
+	rlwinm	r3, r3, 0, 0, 26
     lwz     r0, 0x44(r1)
     mtlr    r0
     addi    r1, r1, 0x40
