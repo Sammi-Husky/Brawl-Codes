@@ -597,31 +597,6 @@ _end:
     
 }
 ################################################################
-#                       BRSAR Open                          
-################################################################
-HOOK @ $801bec3c
-{
-_start:
-    stwu    r1, -0x90(r1)
-    mflr    r0
-    stw     r0, 0x94(r1)
-    stmw    r4, 0x08(r1)
-
-_main:
-    mr      r3, r29
-    li      r4, 2   # slot
-    %call   (SDStreamOpen)
-    cmpwi   r3, 0
-    bne     _end
-
-_end:
-    lmw     r4, 0x08(r1)
-    lwz     r0, 0x94(r1)
-    addi    r1, r1, 0x90    # restore SP
-    mtlr    r0
-    mr      r3, r29         # original instruction
-}
-################################################################
 #                   Never unmount SD
 ################################################################                                 
 # Description:                                                  
