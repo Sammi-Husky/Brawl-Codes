@@ -126,26 +126,29 @@ HOOK @ $8001FFF8
 {
 _start:
     mr      r28, r3 # original instruction
-    stwu    r1, -0x40(r1)
+    stwu    r1, -0xA0(r1)
     mflr    r0
-    stw     r0, 0x44(r1)  
+    stw     r0, 0xA4(r1)  
 _main:
     %FPCPath(r28)
-    addi    r4, r1, 0x08
+    mr      r4, r3         # \
+    addi    r3, r1, 0x08   # | copy filepath to stack to prevent race
+    li      r5, 0x80       # | condition when loading multiple files
+    %call   (strncpy)      # /
+    addi    r4, r1, 0x90
     %call   (FAFStat)
     cmpwi   r3, 0
-    lwz     r3, 0x08(r1)    # get filesize returned from FAFStat
-	addi	r3, r3, 0x1f
-	rlwinm	r3, r3, 0, 0, 26
-    lwz     r0, 0x44(r1)
+    lwz     r3, 0x90(r1)    # get filesize returned from FAFStat
+    addi    r3, r3, 0x1f
+    rlwinm  r3, r3, 0, 0, 26
+    lwz     r0, 0xA4(r1)
     mtlr    r0
-    addi    r1, r1, 0x40
+    addi    r1, r1, 0xA0
     bne     _end            # if filesize was zero, use the original size (already in r28)
     mr      r28, r3         # otherwise, overwrite r28 with size from SD
     %jump   (0x80020338)    # branch to the end of getFileSize
 _end:
     mr      r3, r28
-    
 }
 
 ################################################################
