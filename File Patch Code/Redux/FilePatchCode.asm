@@ -40,9 +40,9 @@ File Patch Code REDUX v0.80 (/Project+) [Sammi Husky]
   mtctr r12
   bctr
 }
-.macro FPCPath(<filepathRegister>)
+.macro FPCPath(<stackOffset>, <filepathRegister>)
 {
-        %lwi    (r3, FPC_PATH)              # \
+		addi	r3, sp, <stackOffset> 		# \     
         %lwi    (r4, MOD_FOLDER)            # | copy mod patch folder to address where
         li      r5, 0x17                    # | we will build our SD filepath
         %call   (strncpy)                   # /  
@@ -75,10 +75,10 @@ HOOK @ $8001BF38
 _start:
     cmpwi   r3, 1 # if DVD
     bne     end
-    stwu    r1, -0x90(r1)
+    stwu    r1, -0x100(r1)
     mflr    r0
-    stw     r0, 0x94(r1)
-    stmw    r4, 0x08(r1)                # | store registers r4 - r31 to stack
+    stw     r0, 0x104(r1)
+    stmw    r4, 0x88(r1)                # | store registers r4 - r31 to stack
     
 _main:
     lwz     r29, 0x0(r30)               # | r30 contains pointer to request object
@@ -89,7 +89,7 @@ _main:
     addi    r28, r28, 0x04              # / use r28 for modified path pointer
 
 _skipAdjust:
-    %FPCPath(r28)
+    %FPCPath(0x08, r28)
     stw     r3, 0(r30)                  # \
     mr      r3, r30                     # | overwrite string ptr in orignal request and
     %call   (checkSD)                   # | use modified request to check sd for file
@@ -106,10 +106,10 @@ _dvd:
     stw     r29, 0(r30)                 # / path string and set request type to dvd read.
     
 _restore:
-    lmw     r4, 0x08(r1)
-    lwz     r0, 0x94(r1)
+    lmw     r4, 0x88(r1)
+    lwz     r0, 0x104(r1)
     mtlr    r0
-    addi    r1, r1, 0x90
+    addi    r1, r1, 0x100
 end:
     mr      r29, r3                     # | original instruction
 }
@@ -130,11 +130,7 @@ _start:
     mflr    r0
     stw     r0, 0xA4(r1)  
 _main:
-    %FPCPath(r28)
-    mr      r4, r3         # \
-    addi    r3, r1, 0x08   # | copy filepath to stack to prevent race
-    li      r5, 0x80       # | condition when loading multiple files
-    %call   (strncpy)      # /
+    %FPCPath(0x08, r28)
     addi    r4, r1, 0x90
     %call   (FAFStat)
     cmpwi   r3, 0
@@ -247,15 +243,15 @@ CODE @ $805A7900
 CODE @ $805A7500
 {
 start:
-    stwu    r1, -0x120(r1)
+    stwu    r1, -0x100(r1)
     mflr    r0
-    stw     r0, 0x124(r1)
-    stmw    r4, 0x08(r1)
+    stw     r0, 0x104(r1)
+    stmw    r4, 0x88(r1)
     mr      r26, r3
     mr      r27, r4
     
 _body:
-    %FPCPath(r26)
+    %FPCPath(0x08, r26)
     mr      r30, r3
     %lwi    (r4, 0x8059c590) # open mode = 'r'
     %call   (FAFOpen)
@@ -277,10 +273,10 @@ _failed:
     %call   (OSReport)
     li      r3, 0
 _end:
-    lmw     r4, 0x08(r1)
-    lwz     r0, 0x124(r1)
+    lmw     r4, 0x88(r1)
+    lwz     r0, 0x104(r1)
     mtlr    r0
-    addi    r1, r1, 0x120
+    addi    r1, r1, 0x100
     blr
 }
 
