@@ -42,7 +42,7 @@ File Patch Code REDUX v0.80 (/Project+) [Sammi Husky]
 }
 .macro FPCPath(<stackOffset>, <filepathRegister>)
 {
-		addi	r3, sp, <stackOffset> 		# \     
+        addi    r3, sp, <stackOffset>       # \     
         %lwi    (r4, MOD_FOLDER)            # | copy mod patch folder to address where
         li      r5, 0x17                    # | we will build our SD filepath
         %call   (strncpy)                   # /  
