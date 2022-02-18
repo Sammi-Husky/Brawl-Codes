@@ -42,7 +42,7 @@ File Patch Code REDUX v0.85 (/Project+) [Sammi Husky]
 }
 .macro FPCPath(<stackOffset>, <filepathRegister>)
 {
-        addi    r3, sp, <stackOffset>       # \     
+        addi    r3, r1, <stackOffset>       # \     
         %lwi    (r4, MOD_FOLDER)            # | copy mod patch folder to address where
         li      r5, 0x17                    # | we will build our SD filepath
         %call   (strncpy)                   # /  
@@ -96,7 +96,7 @@ _skipAdjust:
     cmpwi   r3, 0                       # /
     bne     _dvd
     mr      r3, r29                     # \ copy new string to unadjusted pointer
-    %lwi    (r4, FPC_PATH)              # | If the file exists, copy our modifed path
+    addi    r4, r1, 0x08                # | If the file exists, copy our modifed path
     li      r5, 0x7f                    # | to the original request's path field.
     %call   (strncpy)                   # | and set request type to SD read.
     li      r3, 3                       # | 
@@ -243,9 +243,9 @@ CODE @ $805A7900
 CODE @ $805A7500
 {
 start:
-    stwu    r1, -0x100(r1)
+    stwu    r1, -0x120(r1)
     mflr    r0
-    stw     r0, 0x104(r1)
+    stw     r0, 0x124(r1)
     stmw    r4, 0x88(r1)
     mr      r26, r3
     mr      r27, r4
@@ -274,9 +274,9 @@ _failed:
     li      r3, 0
 _end:
     lmw     r4, 0x88(r1)
-    lwz     r0, 0x104(r1)
+    lwz     r0, 0x124(r1)
     mtlr    r0
-    addi    r1, r1, 0x100
+    addi    r1, r1, 0x120
     blr
 }
 
