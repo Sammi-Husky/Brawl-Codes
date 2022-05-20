@@ -616,4 +616,5 @@ op  blr  @ $8001eb94
 string "/menu2/sc_title.pac"     @ $806FF9A0
 string "/menu2/mu_menumain.pac"  @ $806FB248
 string "/menu2/if_adv_mngr.pac"  @ $80B2C7F8
+string "/movie/param/"           @ $811A1590
 .RESET
