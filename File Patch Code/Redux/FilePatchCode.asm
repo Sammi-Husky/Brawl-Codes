@@ -1,5 +1,5 @@
 ##############################################################################################
-File Patch Code REDUX v0.85 (/Project+) [Sammi Husky]
+File Patch Code REDUX v0.87 (/Project+) [Sammi Husky]
 ##############################################################################################
 .alias _pf               = 0x80507b70
 .alias FPC_PATH          = 0x805a7c00
@@ -475,8 +475,8 @@ end:
 #                THPOpen Routine                         
 ################################################################
 op  bl 0x52B9F4 @ $8007be0c    # THPPlayerOpen
-op  bl 0x528AA4 @ $8007ed5c    # mvMoviePlayer::loadLastFrameInfo
-op  bl 0x5289A0 @ $8007ee60    # mvMoviePlayer::loadLastFrame
+op  nop         @ $8007ed5c    # mvMoviePlayer::loadLastFrameInfo # \ Force MoviePlayer to use the same stream as the reader
+op  nop         @ $8007ee60    # mvMoviePlayer::loadLastFrame     # / instead of a separate stream just for last frame info
 CODE @ $805A7800
 {
 _sdopen:
@@ -510,9 +510,10 @@ _end:
 op  bl 0x52B964   @ $8007c19c   # THPPlayerClose
 op  bl 0x52BBF4   @ $8007bf0c   # THPPlayerOpenProc
 op  bl 0x52BAAC   @ $8007c054   # THPPlayerOpenProc
-op  bl 0x528CF8   @ $8007ee08   # mvMoviePlayer::closeLastFrameInfo
-op  bl 0x528BD8   @ $8007ef28   # mvMoviePlayer::closeLastFrame
 op  bl 0x528F68   @ $8007eb98   # mvMoviePlayer::__dt
+op  nop           @ $8007ee08   # mvMoviePlayer::closeLastFrameInfo # \ Force MoviePlayer to use the same stream as the reader
+op  nop           @ $8007ef28   # mvMoviePlayer::closeLastFrame     # / instead of a separate stream just for last frame info
+
 CODE @ $805A7B00
 {
 _start:
