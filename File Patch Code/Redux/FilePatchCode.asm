@@ -616,5 +616,14 @@ op  blr  @ $8001eb94
 string "/menu2/sc_title.pac"     @ $806FF9A0
 string "/menu2/mu_menumain.pac"  @ $806FB248
 string "/menu2/if_adv_mngr.pac"  @ $80B2C7F8
-string "/movie/param/"           @ $811A1590
+string "/movie/param/"           @ $806F9488
+
+# force thp param path to be read from the copy in sora_scene
+HOOK @ $811878D0
+{
+    addi    r3, r1, 0x30
+    %lwi    (r4, 0x806F9488)
+    li      r5, 0xD
+    %call   (strncpy)
+}
 .RESET
