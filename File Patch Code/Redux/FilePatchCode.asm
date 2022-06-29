@@ -61,7 +61,7 @@ File Patch Code REDUX v0.90 (/Project+) [Sammi Husky]
 .RESET
 * 225664EC 00000000 # only execute if value at 0x805664EC != 0x0 (sd mounted)
 
-string    "/P+EX/././"                          @ $80406920 # Sets path used for SD lookups / reads
+string    "/Project+/"                          @ $80406920 # Sets path used for SD lookups / reads
 string    "pf"                                  @ $80507b70
 string    "SDStreamOpen (slot:%d): %s"          @ $80507b80
 uint8_t   0xA                                   @ $80507b9a
